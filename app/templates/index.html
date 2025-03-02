@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>YouTube to Notion Summarizer</title>
+  </head>
+  <body>
+    <h1>YouTube to Notion Summarizer</h1>
+    <form id="summarizeForm">
+      <label for="video_url">YouTube Video URL:</label>
+      <input type="text" id="video_url" name="video_url" required />
+      <br />
+      <button type="submit">Summarize and Send to Notion</button>
+    </form>
+    <p id="result"></p>
+
+    <script>
+      document
+        .getElementById("summarizeForm")
+        .addEventListener("submit", async (e) => {
+          e.preventDefault();
+          const video_url = document.getElementById("video_url").value;
+          const response = await fetch("/summarize", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ video_url }),
+          });
+
+          const result = await response.json();
+          document.getElementById("result").innerText =
+            result.message || result.error;
+        });
+    </script>
+  </body>
+</html>

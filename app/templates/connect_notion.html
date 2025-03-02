@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Connect to Notion</title>
+  </head>
+  <body>
+    <h1>Connect to Notion</h1>
+    <form id="connectNotionForm">
+      <label for="notion_api_key">Notion API Key:</label>
+      <input type="text" id="notion_api_key" name="notion_api_key" required />
+      <br />
+      <label for="notion_database_id">Notion Database ID:</label>
+      <input
+        type="text"
+        id="notion_database_id"
+        name="notion_database_id"
+        required
+      />
+      <br />
+      <button type="submit">Connect to Notion</button>
+    </form>
+    <p id="result"></p>
+
+    <script>
+      document
+        .getElementById("connectNotionForm")
+        .addEventListener("submit", async (e) => {
+          e.preventDefault();
+          const notion_api_key =
+            document.getElementById("notion_api_key").value;
+          const notion_database_id =
+            document.getElementById("notion_database_id").value;
+
+          const response = await fetch("/connect-notion", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ notion_api_key, notion_database_id }),
+          });
+
+          const result = await response.json();
+          document.getElementById("result").innerText =
+            result.message || result.error;
+
+          if (response.ok) {
+            // Redirect to the summarize page
+            window.location.href = "/main";
+          }
+        });
+    </script>
+  </body>
+</html>

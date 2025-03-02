@@ -2,3 +2,7 @@ flask
 youtube-transcript-api
 gunicorn
 dotenv
+notion_client==2.3.0
+openai
+transformers
+torch
